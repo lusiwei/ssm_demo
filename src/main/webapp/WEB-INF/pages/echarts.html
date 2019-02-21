@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/echarts.common.min.js"></script>
+    <script src="/js/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+<script>
+    $(function () {
+        $("#echarts").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/getEcharts",
+                dataType: "json",
+                success: function (data) {
+                    //初始化echarts实例
+                    let mychart = echarts.init(document.getElementById("main"));
+                    let option = {
+                        title: {
+                            text: 'ECharts 入门示例'
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['销量']
+                        },
+                        xAxis: {
+                            data: data.course
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '成绩',
+                            type: 'bar',
+                            data: data.score
+                        }]
+                    };
+                    mychart.setOption(option);
+                }
+            })
+        })
+    })
+</script>
+<script>
+    $(function () {
+        $("#echarts2").click(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/getEcharts2",
+                success: function (data) {
+                    echarts.init(document.getElementById('main2')).setOption({
+                        series: {
+                            type: 'pie',
+                            data: data
+                        }
+                    });
+                }
+            })
+        });
+    })
+</script>
+<button id="echarts">生成柱形图</button>
+<button id="echarts2">生成饼图</button>
+<div id="main" style="width:600px;height:400px"></div>
+<div id="main2" style="width:600px;height:400px"></div>
+</body>
+</html>
